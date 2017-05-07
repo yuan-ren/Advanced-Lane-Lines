@@ -1,4 +1,5 @@
-**Advanced Lane Finding Project**
+# Advanced Lane Finding Project
+----------------------
 
 The goals / steps of this project are the following:
 
@@ -19,7 +20,7 @@ The goals / steps of this project are the following:
 [image4]: ./images/warped_example.png "Warp Example"
 [image5]: ./images/sliding_window_search.png "Sliding Window Search"
 [image6]: ./images/inv_perspective.png "Output"
-[video1]: ./project_video.mp4 "Video"
+[video1]: ./project_video_output.mp4 "Video"
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
 
@@ -85,7 +86,9 @@ Sliding window searching was only used in the first frame of the video. Because 
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
-I did this in `get_curvature_and_offset` function in the 8th code cell of IPython notebook. 
+I did this in `get_curvature_and_offset` function in the 8th code cell of IPython notebook. The radius of curvature is computed according to the formula and method described in the classroom material. Polynomial fit was calculated in pixels. But because the curvature has to be calculated in real world matrics, I have to use a pixel to meter transformation and recompute the fit again.
+
+The mean of the lane pixels closest to the car gives us the center of the lane. The center of the image gives us the position of the car. The difference between the 2 is the offset from the center.
 
 #### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
@@ -99,7 +102,7 @@ I implemented this step in the function `inverse_transform()` in the 9th code ce
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
 
-Here's a [link to my video result](./project_video.mp4)
+Here's a [link to my video result](./project_video_output.mp4)
 
 ---
 
@@ -107,4 +110,6 @@ Here's a [link to my video result](./project_video.mp4)
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+In the final pipeline (10th code cell in IPython notebook), I used two additional techiques to make the pipeline more robust. First one is to smooth curvature and offset by taking average of previous 10 frames. This is to get rid of possible jumps in calculation results.
+
+Second one is to detect bad frames. There are some frames where lanes cannot be detected correctly. Bad frames are identified if calculated curvatures of left and right lanes are too different. In case of bad frame, we use calculated results from last frame. 
