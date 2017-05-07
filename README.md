@@ -1,6 +1,4 @@
-# Advanced Lane Finding Project
-
-------------------
+**Advanced Lane Finding Project**
 
 The goals / steps of this project are the following:
 
@@ -19,8 +17,8 @@ The goals / steps of this project are the following:
 [image2]: ./images/undistort_output2.png "Road Transformed"
 [image3]: ./images/binary_combo_example.png "Binary Example"
 [image4]: ./images/warped_example.png "Warp Example"
-[image5]: ./images/sliding_window_search.jpg "Sliding Window Search"
-[image6]: ./images/inv_perspective.jpg "Output"
+[image5]: ./images/sliding_window_search.png "Sliding Window Search"
+[image6]: ./images/inv_perspective.png "Output"
 [video1]: ./project_video.mp4 "Video"
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
@@ -78,17 +76,20 @@ I verified that my perspective transform was working as expected by drawing the 
 
 #### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
-Then I did some other stuff and fit my lane lines with a 2nd order polynomial kinda like this:
+I performed a sliding window search to identify lane-line pixels. To start with, I used histogram to find positions of 2 lanes, then used a moving slide window to find lane positions based on previous location. I have used 10 windows of width 100 pixels.
+The x & y coordinates of non zeros pixels are found, a polynomial is fit for these coordinates and the lane lines are drawn. 
 
 ![alt text][image5]
 
+Sliding window searching was only used in the first frame of the video. Because lane positions in the next frame should not move too far, I searched the new postion based on previous results. This was implemented in function `search_lane_in_margin` in the 7th code cell of IPython notebook.
+
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
-I did this in lines # through # in my code in `my_other_file.py`
+I did this in `get_curvature_and_offset` function in the 8th code cell of IPython notebook. 
 
 #### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
-I implemented this step in lines # through # in my code in `yet_another_file.py` in the function `map_lane()`.  Here is an example of my result on a test image:
+I implemented this step in the function `inverse_transform()` in the 9th code cell of IPython notebook.  Here is an example of my result on a test image:
 
 ![alt text][image6]
 
