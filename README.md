@@ -1,7 +1,7 @@
 # Advanced Lane Finding Project
 ----------------------
 
-The goals / steps of this project are the following:
+In this project, computer vision techniques are used to detect lines from camera images. Detailed goals / steps of this project are the following:
 
 * Compute the camera calibration matrix and distortion coefficients given a set of chessboard images.
 * Apply a distortion correction to raw images.
@@ -22,21 +22,11 @@ The goals / steps of this project are the following:
 [image6]: ./images/inv_perspective.png "Output"
 [video1]: ./project_video_output.mp4 "Video"
 
-## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
-
-### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
-
 ---
-
-### Writeup / README
-
-#### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.  You can submit your writeup as markdown or pdf.  [Here](https://github.com/udacity/CarND-Advanced-Lane-Lines/blob/master/writeup_template.md) is a template writeup for this project you can use as a guide and a starting point.  
-
-You're reading it!
 
 ### Camera Calibration
 
-#### 1. Briefly state how you computed the camera matrix and distortion coefficients. Provide an example of a distortion corrected calibration image.
+#### 1. Compute camera matrix and distortion coefficients are compute:
 
 The code for this step is contained in the second code cell of the IPython notebook located in "./Project.ipynb".  
 
@@ -48,18 +38,18 @@ I then used the output `objpoints` and `imgpoints` to compute the camera calibra
 
 ### Pipeline (single images)
 
-#### 1. Provide an example of a distortion-corrected image.
+#### 1. An example of a distortion-corrected image.
 
 To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
 ![alt text][image2]
 
-#### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
+#### 2. Use color transforms, gradients or other methods to create a thresholded binary image.  
 
 I used a combination of color and gradient thresholds to generate a binary image (thresholding steps in the fourth code cell of the IPython notebook).  Here's an example of my output for this step. 
 
 ![alt text][image3]
 
-#### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
+#### 3. Perspective transform and an example of a transformed image.
 
 The code for my perspective transform in contained in the fifth code cell of the IPython notebook.  The source and destination points I chose are listed below:
 
@@ -75,7 +65,7 @@ I verified that my perspective transform was working as expected by drawing the 
 
 ![alt text][image4]
 
-#### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
+#### 4. Identify lane-line pixels and fit their positions with a polynomial
 
 I performed a sliding window search to identify lane-line pixels. To start with, I used histogram to find positions of 2 lanes, then used a moving slide window to find lane positions based on previous location. I have used 10 windows of width 100 pixels.
 The x & y coordinates of non zeros pixels are found, a polynomial is fit for these coordinates and the lane lines are drawn. 
@@ -84,13 +74,13 @@ The x & y coordinates of non zeros pixels are found, a polynomial is fit for the
 
 Sliding window searching was only used in the first frame of the video. Because lane positions in the next frame should not move too far, I searched the new postion based on previous results. This was implemented in function `search_lane_in_margin` in the 7th code cell of IPython notebook.
 
-#### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
+#### 5. Calculate the radius of curvature of the lane and the position of the vehicle with respect to center.
 
 I did this in `get_curvature_and_offset` function in the 8th code cell of IPython notebook. The radius of curvature is computed according to the formula and method described in the classroom material. Polynomial fit was calculated in pixels. But because the curvature has to be calculated in real world matrics, I have to use a pixel to meter transformation and recompute the fit again.
 
 The mean of the lane pixels closest to the car gives us the center of the lane. The center of the image gives us the position of the car. The difference between the 2 is the offset from the center.
 
-#### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
+#### 6. An example image of result plotted back down onto the road such that the lane area is identified clearly.
 
 I implemented this step in the function `inverse_transform()` in the 9th code cell of IPython notebook.  Here is an example of my result on a test image:
 
@@ -100,7 +90,7 @@ I implemented this step in the function `inverse_transform()` in the 9th code ce
 
 ### Pipeline (video)
 
-#### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
+#### 1. Link to the final video output.  
 
 Here's a [link to my video result](./project_video_output.mp4)
 
@@ -108,7 +98,7 @@ Here's a [link to my video result](./project_video_output.mp4)
 
 ### Discussion
 
-#### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
+#### 1. Problems / issues faced in this project. 
 
 In the final pipeline (10th code cell in IPython notebook), I used two additional techiques to make the pipeline more robust. First one is to smooth curvature and offset by taking average of previous 10 frames. This is to get rid of possible jumps in calculation results.
 
